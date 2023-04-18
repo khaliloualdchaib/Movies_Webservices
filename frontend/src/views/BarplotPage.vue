@@ -42,10 +42,10 @@ export default {
                     this.loading = false
                     return
                 }
-                this.inputerror = true
-                this.errormsg = response.data.message
-
             } catch (error) {
+                this.inputerror = true
+                this.loading = false
+                this.errormsg = ""
                 console.log(error)
             }
         }

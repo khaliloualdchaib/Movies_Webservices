@@ -14,6 +14,8 @@ class SimilarGenre(Resource):
         response = requests.get(f'{self.base_url}/movie/{movie_id}?api_key={API_KEY}')
         if response.status_code == 404:
             return APIresponse([], 404, "Movie not found.")
+        if response.status_code != 200:
+            return APIresponse([], 400, "Bad Request")
         data = response.json()
         genres = data['genres']
         genre_ids = "" #for the request needed
@@ -21,14 +23,14 @@ class SimilarGenre(Resource):
             genre_ids += str(genre['id']) + ','
         genre_ids = genre_ids[:-1] #remove the last ,
         response = requests.get(f'{self.base_url}/discover/movie/?api_key={API_KEY}&with_genres={genre_ids}')
-        data = response.json()
-        movies = []
-        for movie in data["results"]:
-            if movie['id'] not in DELETED:
-                #add the movie only if the given movie genres are a subset of the current movie
-                genres = [getGenre(genre) for genre in movie['genre_ids']]
-                date = movie['release_date'] if 'release_date' in movie else "Unknown"
-                id = movie["id"]
-                runtime = requests.get(f'{self.base_url}/movie/{id}?api_key={API_KEY}').json()['runtime']
-                movies.append(dataItem(title= movie['title'], id=id, actors=getActors(id), genres=genres, runtime=runtime, release_date=date))
-        return APIresponse(movies, 200, "OK")
+        if response.status_code == 200:
+            data = response.json()
+            movies = []
+            for movie in data["results"]:
+                if movie['id'] not in DELETED:
+                    #add the movie only if the given movie genres are a subset of the current movie
+                    genres = [getGenre(genre) for genre in movie['genre_ids']]
+                    id = movie["id"]
+                    movies.append(dataItem(title= movie['title'], id=id, actors=getActors(id), genres=genres))
+            return APIresponse(movies, 200, "OK")
+        return APIresponse([], 400, "Bad Request")

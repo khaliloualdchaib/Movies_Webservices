@@ -1,14 +1,12 @@
 from flask import make_response
 import json
-API_KEY = ''
-def dataItem(title, id, genres, actors, runtime, release_date):
+API_KEY = '35561ae695e7b88ee39ae0ddbc4637c9'
+def dataItem(title, id, genres, actors):
     return {
         'title': title,
         'id': id,
         'actors': actors,
         'genres': genres,
-        'runtime': runtime,
-        'release_date': release_date,
     }
 
 def APIresponse(data, status, message):

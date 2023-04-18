@@ -115,6 +115,9 @@ export default {
                 }
                 this.searchresults = response.data.data
             } catch (error) {
+                this.loading = false
+                this.error = true
+                this.errormsg = "There is no movie with the query you gave."
                 console.log(error)
             }
         },
@@ -207,14 +210,6 @@ export default {
                     <div class="flex flex-col py-3">
                         <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Genres</dt>
                         <dd class="text-lg font-semibold">{{ list2string(movie.genres) }}</dd>
-                    </div>
-                    <div class="flex flex-col py-3">
-                        <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Runtime</dt>
-                        <dd class="text-lg font-semibold">{{ movie.runtime }}</dd>
-                    </div>
-                    <div class="flex flex-col pt-3">
-                        <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Release Date</dt>
-                        <dd class="text-lg font-semibold">{{ movie.release_date }}</dd>
                     </div>
                     <div class="flex flex-col pt-3">
                         <button type="button" @click="DELETE(movie.id)"
