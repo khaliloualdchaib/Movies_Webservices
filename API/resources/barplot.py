@@ -21,7 +21,6 @@ class BarPlot(Resource):
         movienames = []
         for movie in id_list:
             response = requests.get(f'{self.base_url}/movie/{movie}?api_key={API_KEY}')
-            print(DELETED, str(movie))
             if response.status_code == 404 or int(movie) in DELETED:
                 return APIresponse([], 404, f"Movie with id {movie} does not exist.")
             elif response.status_code == 200:

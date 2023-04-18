@@ -9,7 +9,6 @@ class Movie(Resource):
         self.base_url = "https://api.themoviedb.org/3"
 
     def get(self, movie_id=None):
-        print(DELETED)
         if movie_id is None:
             """
             Given a movie(title) return the corresponding movies.
@@ -21,7 +20,7 @@ class Movie(Resource):
                 if len(data['results']) == 0:
                     return APIresponse([], 404, "Movie not Found.")
                 if title is None:
-                    return APIresponse([], 204, "No Content")
+                    return APIresponse([], 400, "Bad Request")
                 movies = []
                 for i in range(len(data['results'])):
                     if data['results'][i]['id'] not in DELETED:

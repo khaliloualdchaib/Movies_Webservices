@@ -21,7 +21,8 @@ export default {
         }
     },
     mounted() {
-        this.fillLikedMovies()
+        this.fillLikedMovies();
+        console.log(this.likedMovies);
     }
     ,
     methods: {
@@ -55,13 +56,12 @@ export default {
             if (response.status == 200) {
                 this.likedMovies.delete(id)
             }
-        }
-        ,
+        },
         async fillLikedMovies() {
             const url = 'http://127.0.0.1:5000/api/liked-movies';
             const resp = await axios.get(url)
             for (let i = 0; i<resp.data.data.length; i++){
-                this.likedMovies.add(resp.data.data[i][0].id)
+                this.likedMovies.add(resp.data.data[i].id)
             }
         },
         async DELETE(id: number) {
@@ -86,7 +86,6 @@ export default {
             try {
                 this.error = false
                 this.deleted = false
-                console.log(this.optionselected)
                 var url = 'http://127.0.0.1:5000/api/movies'
                 if (this.optionselected == 'name') {
                     url += '?movie_title=' + this.searchquery
@@ -108,11 +107,6 @@ export default {
                 this.loading = true
                 const response = await axios.get(url);
                 this.loading = false
-                if (response.status != 200) {
-                    this.error = true
-                    this.errormsg = "There is no movie with the query you gave."
-                    return
-                }
                 this.searchresults = response.data.data
             } catch (error) {
                 this.loading = false

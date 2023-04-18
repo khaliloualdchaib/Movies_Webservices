@@ -13,7 +13,11 @@ class Popular(Resource):
         """ 
         try:
             movies = []
-            amount = int(request.args.get('limit'))
+            amount = request.args.get('limit')
+            if amount is None:
+                amount = 20
+            else:
+                amount = int(amount)
             #calculate number of pages
             pages = (amount-1) // 20 + 1
             for page in range(1, pages+1):
