@@ -1,6 +1,6 @@
 from flask import make_response
 import json
-API_KEY = '35561ae695e7b88ee39ae0ddbc4637c9'
+API_KEY = ''
 def dataItem(title, id, genres, actors):
     return {
         'title': title,
